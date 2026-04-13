@@ -1,0 +1,24 @@
+{
+  "name": "yjtest",
+  "version": "1.4.0",
+  "description": "YJTest is an AI-powered automation testing platform for intelligent case generation, knowledge workflows, and MCP tooling.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "docs:build:github": "node deploy-scripts/build-github.js",
+    "docs:build:baota": "node deploy-scripts/build-baota.js"
+  },
+  "keywords": [],
+  "author": "YJTest Team",
+  "license": "ISC",
+  "devDependencies": {
+    "sass-embedded": "^1.97.2",
+    "vitepress": "^1.6.4"
+  },
+  "dependencies": {
+    "medium-zoom": "^1.1.0"
+  }
+}
