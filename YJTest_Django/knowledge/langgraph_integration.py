@@ -166,6 +166,27 @@ class KnowledgeRAGService:
 
             logger.info(f"回答生成完成，耗时 {generation_time:.3f}s")
 
+            # 知识沉淀：有检索结果且回答成功时异步触发
+            if context_sources:
+                try:
+                    knowledge_base_id = state.get("knowledge_base_id")
+                    user = state.get("user")
+                    if knowledge_base_id:
+                        from .models import KnowledgeBase
+                        from .services import KnowledgeBaseService
+                        import threading
+                        kb = KnowledgeBase.objects.get(id=knowledge_base_id)
+                        svc = KnowledgeBaseService(kb)
+                        if svc._should_precipitate(context_sources, response.content):
+                            threading.Thread(
+                                target=svc.precipitate_knowledge,
+                                args=(state["question"], response.content, context_sources),
+                                kwargs={"user": user},
+                                daemon=True,
+                            ).start()
+                except Exception as pe:
+                    logger.warning(f"知识沉淀触发失败（不影响主流程）: {pe}")
+
             return {
                 "answer": response.content,
                 "generation_time": generation_time,
