@@ -547,7 +547,6 @@ def create_knowledge_tool(knowledge_base_id: str, user, similarity_threshold: fl
                 metadata = result.get("metadata", {})
                 source = metadata.get("source", "未知来源")
 
-                # 将相似度转换为百分比显示
                 similarity_percentage = score * 100
                 formatted_results.append(
                     f"[结果{i}] (相似度: {similarity_percentage:.1f}%, 来源: {source})\n{content}"
@@ -555,6 +554,16 @@ def create_knowledge_tool(knowledge_base_id: str, user, similarity_threshold: fl
 
             result_text = "\n\n".join(formatted_results)
             logger.info(f"知识库工具返回 {len(search_results)} 个结果")
+
+            # 知识沉淀：检索结果质量足够时异步写回
+            if service._should_precipitate(search_results, result_text):
+                import threading
+                threading.Thread(
+                    target=service.precipitate_knowledge,
+                    args=(query, result_text, search_results),
+                    kwargs={"user": user},
+                    daemon=True,
+                ).start()
 
             return result_text
 
