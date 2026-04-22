@@ -498,6 +498,7 @@ onMounted(() => {
   flex: 1;
   overflow-y: auto;
   min-height: 0;
+  max-height: calc(100vh - 200px);
   padding-right: 4px;
 }
 

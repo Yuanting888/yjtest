@@ -445,6 +445,7 @@ onMounted(async () => {
   display: flex;
   gap: 20px;
   overflow: hidden;
+  min-height: 0;
   margin-top: 0;
 }
 
