@@ -14,7 +14,7 @@
       <a-spin :loading="loading" tip="加载中..." class="dashboard-spin">
         <!-- 顶部数据概览 -->
         <div class="overview-section">
-          <div class="overview-card">
+          <div class="overview-card clickable" @click="router.push('/testcases')">
             <div class="overview-header">
               <icon-file class="overview-icon" />
               <span class="overview-title">功能用例</span>
@@ -28,7 +28,7 @@
             </div>
           </div>
 
-          <div class="overview-card">
+          <div class="overview-card clickable" @click="router.push('/ui-automation')">
             <div class="overview-header">
               <icon-desktop class="overview-icon" />
               <span class="overview-title">UI自动化</span>
@@ -41,7 +41,7 @@
             </div>
           </div>
 
-          <div class="overview-card">
+          <div class="overview-card clickable" @click="router.push('/test-executions')">
             <div class="overview-header">
               <icon-thunderbolt class="overview-icon" />
               <span class="overview-title">执行统计</span>
@@ -53,7 +53,7 @@
             </div>
           </div>
 
-          <div class="overview-card">
+          <div class="overview-card clickable" @click="router.push('/remote-mcp-configs')">
             <div class="overview-header">
               <icon-apps class="overview-icon" />
               <span class="overview-title">MCP / Skills</span>
@@ -76,7 +76,7 @@
             </div>
             <div class="panel-body">
               <div class="status-bars">
-                <div class="status-bar-item" v-for="item in reviewStatusData" :key="item.key">
+                <div class="status-bar-item clickable" v-for="item in reviewStatusData" :key="item.key" @click="router.push('/testcases')">
                   <div class="bar-header">
                     <span class="bar-label">{{ item.label }}</span>
                     <span class="bar-value">{{ item.value }} <span class="bar-percent">({{ item.percent }}%)</span></span>
@@ -241,6 +241,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { Message } from '@arco-design/web-vue';
 import {
   IconBarChart, IconFile, IconThunderbolt, IconApps, IconDesktop
@@ -249,6 +250,7 @@ import { getProjectStatistics, getTokenUsageStats, type ProjectStatistics, type 
 import { useProjectStore } from '@/store/projectStore';
 
 const projectStore = useProjectStore();
+const router = useRouter();
 const loading = ref(false);
 const statistics = ref<ProjectStatistics | null>(null);
 const tokenStats = ref<TokenUsageStats | null>(null);
@@ -420,6 +422,21 @@ onMounted(() => {
 
 .overview-card:hover {
   box-shadow: 4px 0 12px rgba(var(--theme-accent-rgb), 0.22), 0 4px 12px rgba(var(--theme-accent-rgb), 0.22), 0 0 12px rgba(var(--theme-accent-rgb), 0.18);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  transform: translateY(-2px);
+}
+
+.status-bar-item.clickable:hover {
+  background: color-mix(in srgb, var(--theme-accent) 8%, transparent);
+  border-radius: 6px;
+  padding: 4px 6px;
+  margin: -4px -6px;
 }
 
 .overview-header {
