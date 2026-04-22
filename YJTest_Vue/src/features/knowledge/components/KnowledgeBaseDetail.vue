@@ -476,6 +476,7 @@ onMounted(() => {
   height: 100%;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .detail-header {
@@ -496,6 +497,8 @@ onMounted(() => {
 .detail-content {
   flex: 1;
   overflow-y: auto;
+  min-height: 0;
+  padding-right: 4px;
 }
 
 .info-grid {
